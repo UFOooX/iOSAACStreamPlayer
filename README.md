@@ -1,8 +1,8 @@
-# AACPlayer plays naked AAC stream packets with AVAudioSampleBufferRenderer.
+# AACPlayer plays naked AAC stream packets with AVSampleBufferAudioRenderer.
 
 This is modified from Apple's AirPlay2 demo project SampleBufferPlayer.
 
-AACPlayer add a adts file stream source. And plays it in AVAudioSampleBufferRenderer.
+AACPlayer add a adts file stream source. And plays it in AVSampleBufferAudioRenderer.
 
 ## Parsing ADTS header for AAC format information and sample rate etc.
 
@@ -24,7 +24,7 @@ For one AAC stream, framesPerPacket is a constant value. In AAC-LC, it is 1024, 
 
 [View in Source](x-source-tag://AACAudioFormatDescriptionCreating)
 
-## Most important thing, AVAudioSampleBufferRenderer want naked AAC packets, without ADTS headers.
+## Most important thing, AVSampleBufferAudioRenderer want naked AAC packets, without ADTS headers.
 
 - Important: For sampleBuffer building, you should use size array, or packet descriptions to indicate each packet's length.
 
