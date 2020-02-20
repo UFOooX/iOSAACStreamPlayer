@@ -35,5 +35,32 @@ public struct ADTSHeader {
     public var dataOffset:Int = 0
     public var samplesPerFrame:Int = 1024
     public var formatID:AudioFormatID = kAudioFormatMPEG4AAC
+
+    func toInt64() -> UInt64 {
+        var adts : UInt64 = 0
+
+        let a = UInt64(0x00FFF00000000000)
+        let b = UInt64(mpegID.rawValue) << 43
+        let d = UInt64(protectionAbsent ? 1 : 0) << 40
+        let e = UInt64(profile.rawValue - 1) << 38
+        let f = UInt64(ADTSHeader.SAMPLE_RATE_TABLE.firstIndex(of: sampleRate)!) << 34
+        let h = UInt64(channels) << 30
+        let m = UInt64(frameLength + (protectionAbsent ? 7 : 9)) << 13
+
+        adts |= a
+        adts |= b
+        adts |= d
+        adts |= e
+        adts |= f
+        adts |= h
+        adts |= m
+
+        return CFSwapInt64(adts) >> 8
+    }
+
+    func toData() -> Data {
+        var integer = toInt64()
+        return Data(bytes:&integer, count: protectionAbsent ? 7 : 9)
+    }
 }
 
